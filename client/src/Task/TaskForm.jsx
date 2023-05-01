@@ -1,8 +1,30 @@
 import { useForm } from "react-hook-form";
+import { Country, State, City } from "country-state-city";
+import { useEffect, useState } from "react";
 
 const TaskForm = () => {
     const { register, handleSubmit } = useForm();
-    const onSubmit = data => console.log(data);
+    const [country, setcountry] = useState([]);
+    const [countryCode, setCountryCode] = useState('');
+    const [state, setState] = useState([]);
+    const [stateCode, setStateCode] = useState('');
+    const [city, setCity] = useState([])
+
+    const onSubmit = (data) => {
+
+        console.log(data);
+        localStorage.setItem("data", JSON.stringify(data))
+    }
+
+
+    useEffect(() => {
+        setcountry(Country.getAllCountries())
+        setState(State.getStatesOfCountry(countryCode));
+        setCity(City.getCitiesOfState(countryCode, stateCode))
+    }, [countryCode, stateCode])
+
+    // country.map((e) => console.log(e.name))
+    // console.log(city)
 
     return (
         <div className="container-fluid">
@@ -10,16 +32,24 @@ const TaskForm = () => {
                 <form className="" onSubmit={handleSubmit(onSubmit)}>
                     {/* Personal */}
                     <div className="mb-3">
-                        <h5 className="mb-3"><u>Personal Details</u></h5>
-                        <div className="row mb-2" >
+                        <h5 className="mb-3">
+                            <u>Personal Details</u>
+                        </h5>
+                        <div className="row mb-3">
                             <div className="col-md-5">
                                 <div className="row">
                                     <div className="col-md-2">
-                                        <label className="" htmlFor="name" >Name* </label>
+                                        <label className="" htmlFor="name">
+                                            Name*{" "}
+                                        </label>
                                     </div>
                                     <div className="col-md-10">
-                                        <input className="form-control" id="name" {...register("firstName")} placeholder="Enter Name" />
-
+                                        <input
+                                            className="form-control"
+                                            id="name"
+                                            {...register("firstName")}
+                                            placeholder="Enter Name"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -29,8 +59,12 @@ const TaskForm = () => {
                                         <label htmlFor="dob">Date of Birth od Age* </label>
                                     </div>
                                     <div className="col-md-8">
-                                        <input className="form-control" id="dob" {...register("dob")} placeholder="DD/MM/YYYY or Age in Years" />
-
+                                        <input
+                                            className="form-control"
+                                            id="dob"
+                                            {...register("dob")}
+                                            placeholder="DD/MM/YYYY or Age in Years"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -55,10 +89,14 @@ const TaskForm = () => {
                                 <div className="row">
                                     <div className="col-md-2">
                                         <label htmlFor="mobil">Mobile* </label>
-
                                     </div>
                                     <div className="col-md-9">
-                                        <input className="form-control" id="mobile" {...register("mobile")} placeholder="Enter Mobile" />
+                                        <input
+                                            className="form-control"
+                                            id="mobile"
+                                            {...register("mobile")}
+                                            placeholder="Enter Mobile"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -74,19 +112,23 @@ const TaskForm = () => {
                                             <option value="pan">PAN</option>
                                         </select>
                                     </div>
-
                                 </div>
-
                             </div>
                             <div className="col-md-3">
-                                <input className="form-control" {...register("ID_value")} placeholder="Enter Govt ID" />
+                                <input
+                                    className="form-control"
+                                    {...register("ID_value")}
+                                    placeholder="Enter Govt ID"
+                                />
                             </div>
                         </div>
                     </div>
 
                     {/* Contact */}
                     <div className="mb-3">
-                        <h5 className=" mb-3"><u>Contact Details</u></h5>
+                        <h5 className=" mb-3">
+                            <u>Contact Details</u>
+                        </h5>
                         <div className="row">
                             <div className="col-md-5">
                                 <div className="row">
@@ -94,14 +136,23 @@ const TaskForm = () => {
                                         <label htmlFor="guardian">Guardian Details</label>
                                     </div>
                                     <div className="col-md-3">
-                                        <select id="" className="form-select" {...register("guardian_label")} placeholder="">
+                                        <select
+                                            id=""
+                                            className="form-select"
+                                            {...register("guardian_label")}
+                                            placeholder=""
+                                        >
                                             <option value="">Enter Label</option>
                                             <option value="Mr">Mr</option>
                                             <option value="Mrs">Mrs</option>
                                         </select>
                                     </div>
                                     <div className="col-md-5">
-                                        <input {...register("guardian_name")} placeholder="Enter Guardian Name" className="form-control" />
+                                        <input
+                                            {...register("guardian_name")}
+                                            placeholder="Enter Guardian Name"
+                                            className="form-control"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -111,13 +162,23 @@ const TaskForm = () => {
                                         <label htmlFor="">Email </label>
                                     </div>
                                     <div className="col-md-4">
-                                        <input className="form-control" type="text" {...register("email")} placeholder="Enter Email" />
+                                        <input
+                                            className="form-control"
+                                            type="text"
+                                            {...register("email")}
+                                            placeholder="Enter Email"
+                                        />
                                     </div>
                                     <div className="col-md-3">
                                         <label htmlFor="">Emergency Contact Number </label>
                                     </div>
                                     <div className="col-md-4">
-                                        <input className="form-control" type="text" {...register("emergency_contact")} placeholder="Enter Emergency Number" />
+                                        <input
+                                            className="form-control"
+                                            type="text"
+                                            {...register("emergency_contact")}
+                                            placeholder="Enter Emergency Number"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -127,7 +188,9 @@ const TaskForm = () => {
                     {/* Address Details */}
 
                     <div className="mb-3">
-                        <h5 className=" mb-3"><u>Address Details</u></h5>
+                        <h5 className=" mb-3">
+                            <u>Address Details</u>
+                        </h5>
                         <div className="row mb-2">
                             <div className="col-md-5">
                                 <div className="row">
@@ -135,7 +198,12 @@ const TaskForm = () => {
                                         <label htmlFor="">Address </label>
                                     </div>
                                     <div className="col-md-10">
-                                        <input className="form-control" type="text" {...register("address")} placeholder="Enter Adress" />
+                                        <input
+                                            className="form-control"
+                                            type="text"
+                                            {...register("address")}
+                                            placeholder="Enter Adress"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -145,18 +213,31 @@ const TaskForm = () => {
                                         <label htmlFor="">State </label>
                                     </div>
                                     <div className="col-md-5">
-                                        <select name="" id="" className="form-select" {...register("state")}>
-                                            <option value="">
-                                                state
-                                            </option>
+                                        <select
+                                            name=""
+                                            id=""
+                                            className="form-select"
+                                            {...register("state")}
+                                            onChange={(e) => setStateCode(e.target.value)}
+                                        >
+                                            {
+                                                state?.map((s) => <option key={s.isoCode} value={s.isoCode}>{s.name}</option>)
+                                            }
                                         </select>
                                     </div>
                                     <div className="col-md-1">
                                         <label htmlFor="">City </label>
                                     </div>
                                     <div className="col-md-4">
-                                        <select name="" id="" className="form-select" {...register("city")}>
-                                            <option value="">city</option>
+                                        <select
+                                            name=""
+                                            id=""
+                                            className="form-select"
+                                            {...register("city")}
+                                        >
+                                            {
+                                                city?.map((c) => <option key={c.latitude}>{c.name}</option>)
+                                            }
                                         </select>
                                     </div>
                                 </div>
@@ -169,10 +250,19 @@ const TaskForm = () => {
                                         <label htmlFor="">Country</label>
                                     </div>
                                     <div className="col-md-8">
-                                        <input type="" className="form-control" {...register("country")} />
+                                        <select
+                                            name=""
+                                            id=""
+                                            className="form-select"
+                                            {...register("country")}
+                                            onChange={(e) => setCountryCode(e.target.value)}
+                                        >
+                                            {
+                                                country?.map((c) => <option key={c.isoCode} value={c.isoCode} >{c.name}</option>)
+                                            }
+                                        </select>
                                     </div>
                                 </div>
-
                             </div>
                             <div className="col-md-7">
                                 <div className="row ">
@@ -180,7 +270,12 @@ const TaskForm = () => {
                                         <label htmlFor="">Pincode </label>
                                     </div>
                                     <div className="col-md-6">
-                                        <input type="text" className="form-control" {...register("pincode")} placeholder="Enter Pincode" />
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            {...register("pincode")}
+                                            placeholder="Enter Pincode"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -189,7 +284,9 @@ const TaskForm = () => {
 
                     {/* other details */}
                     <div className="mb-3">
-                        <h5 className=" mb-3"><u>Contact Details</u></h5>
+                        <h5 className=" mb-3">
+                            <u>Contact Details</u>
+                        </h5>
                         <div className="row mb-3">
                             <div className="col-md-3">
                                 <div className="row">
@@ -197,10 +294,16 @@ const TaskForm = () => {
                                         <label htmlFor="">Occupation</label>
                                     </div>
                                     <div className="col-md-8">
-                                        <input type="text" name="" id="" placeholder="Enter Occupation" className="form-control" {...register("ocupation")} />
+                                        <input
+                                            type="text"
+                                            name=""
+                                            id=""
+                                            placeholder="Enter Occupation"
+                                            className="form-control"
+                                            {...register("ocupation")}
+                                        />
                                     </div>
                                 </div>
-
                             </div>
                             <div className="col-md-3">
                                 <div className="row">
@@ -208,7 +311,12 @@ const TaskForm = () => {
                                         <label htmlFor="">Region</label>
                                     </div>
                                     <div className="col-md-9">
-                                        <select name="" id="" className="form-select" {...register("region")}>
+                                        <select
+                                            name=""
+                                            id=""
+                                            className="form-select"
+                                            {...register("region")}
+                                        >
                                             <option value="">Enter Region</option>
                                         </select>
                                     </div>
@@ -217,12 +325,15 @@ const TaskForm = () => {
                             <div className="col-md-3">
                                 <div className="row">
                                     <div className="col-md-5">
-                                        <label htmlFor="">
-                                            Martial Status
-                                        </label>
+                                        <label htmlFor="">Martial Status</label>
                                     </div>
                                     <div className="col-md-7">
-                                        <select name="" id="" className="form-select" {...register("martial_status")}>
+                                        <select
+                                            name=""
+                                            id=""
+                                            className="form-select"
+                                            {...register("martial_status")}
+                                        >
                                             <option value="">single</option>
                                         </select>
                                     </div>
@@ -234,7 +345,12 @@ const TaskForm = () => {
                                         <label htmlFor="">Blood Group</label>
                                     </div>
                                     <div className="col-md-7">
-                                        <select name="" id="" className="form-select" {...register("blood-group")}>
+                                        <select
+                                            name=""
+                                            id=""
+                                            className="form-select"
+                                            {...register("blood-group")}
+                                        >
                                             <option value="">B+</option>
                                         </select>
                                     </div>
@@ -248,7 +364,12 @@ const TaskForm = () => {
                                         <label htmlFor="">Nationality </label>
                                     </div>
                                     <div className="col-md-8">
-                                        <input type="text" className="form-control" value={"India"} {...register("nationality")} />
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={"India"}
+                                            {...register("nationality")}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -256,27 +377,37 @@ const TaskForm = () => {
                     </div>
                     <div className="d-flex justify-content-end">
                         <div className="" style={{ marginRight: "3rem" }}>
-                            <button className="btn" style={{
-                                backgroundColor: "",
-                                height: "50px",
-                                width: "100px",
-                                color: "",
-                                border: "1px solid black"
-                            }}  >CANCEL</button>
+                            <button
+                                className="btn btn-outline-secondary"
+                                style={{
+                                    backgroundColor: "",
+                                    height: "50px",
+                                    width: "100px",
+                                    color: "",
+                                }}
+                            >
+                                CANCEL
+                            </button>
                         </div>
                         <div className="">
-                            <button className="btn" style={{
-                                backgroundColor: "red",
-                                height: "50px",
-                                width: "100px",
-                                color: "white"
-                            }} type="submit" > SUBMIT</button>
+                            <button
+                                className="btn"
+                                style={{
+                                    backgroundColor: "red",
+                                    height: "50px",
+                                    width: "100px",
+                                    color: "white",
+                                }}
+                                type="submit"
+                            >
+                                {" "}
+                                SUBMIT
+                            </button>
                         </div>
                     </div>
                 </form>
             </div>
-
         </div>
     );
-}
-export default TaskForm
+};
+export default TaskForm;
