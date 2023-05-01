@@ -40,7 +40,6 @@ const TaskForm = () => {
         //console.log(JSON.stringify(data))
     }
 
-
     useEffect(() => {
         setcountry(Country.getAllCountries())
         setState(State.getStatesOfCountry(countryCode));
