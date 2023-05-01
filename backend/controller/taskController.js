@@ -48,7 +48,7 @@ const addTaskController = async (req, res) => {
     });
     await data.save();
     res.status(200).send({
-      success: false,
+      success: true,
       messege: "Data successfully added.",
       data,
     });
@@ -80,4 +80,21 @@ const gettaskController = async (req, res) => {
   }
 };
 
-module.exports = { addTaskController, gettaskController };
+const deleteTaskController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    await TaskModel.findByIdAndDelete(id);
+    res.status(200).send({
+      success: true,
+      messege: "Data Deleted Successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      messege: "Error while deleting data",
+    });
+  }
+};
+
+module.exports = { addTaskController, gettaskController, deleteTaskController };

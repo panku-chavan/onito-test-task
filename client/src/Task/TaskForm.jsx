@@ -1,19 +1,43 @@
 import { useForm } from "react-hook-form";
 import { Country, State, City } from "country-state-city";
 import { useEffect, useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+
+import axios from "axios";
+
 
 const TaskForm = () => {
-    const { register, handleSubmit } = useForm();
     const [country, setcountry] = useState([]);
     const [countryCode, setCountryCode] = useState('');
     const [state, setState] = useState([]);
     const [stateCode, setStateCode] = useState('');
     const [city, setCity] = useState([])
 
-    const onSubmit = (data) => {
 
-        console.log(data);
-        localStorage.setItem("data", JSON.stringify(data))
+    const schema = yup.object().shape({
+        name: yup.string().required(),
+        age: yup.string().required(),
+        sex: yup.string().required()
+    });
+
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+        resolver: yupResolver(schema)
+    });
+
+    const onSubmit = async (data) => {
+        try {
+            const task = await axios.post('http://localhost:3100/api/v1/task/add-task', data);
+            if (task?.data?.success) {
+                console.log(task.data.messege)
+            } else {
+                console.log(task.data.messege)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+        //console.log(JSON.stringify(data))
     }
 
 
@@ -47,8 +71,9 @@ const TaskForm = () => {
                                         <input
                                             className="form-control"
                                             id="name"
-                                            {...register("name")}
+                                            {...register("name", { required: true })}
                                             placeholder="Enter Name"
+
                                         />
                                     </div>
                                 </div>
@@ -62,8 +87,9 @@ const TaskForm = () => {
                                         <input
                                             className="form-control"
                                             id="age"
-                                            {...register("age")}
+                                            {...register("age", { required: true })}
                                             placeholder="DD/MM/YYYY or Age in Years"
+
                                         />
                                     </div>
                                 </div>
@@ -74,7 +100,7 @@ const TaskForm = () => {
                                         <label htmlFor="">sex* </label>
                                     </div>
                                     <div className="col-md-10">
-                                        <select className="form-select" {...register("sex")}>
+                                        <select className="form-select" {...register("sex", { required: true })}>
                                             <option value="">select sex</option>
                                             <option value="female">female</option>
                                             <option value="male">male</option>
@@ -82,6 +108,20 @@ const TaskForm = () => {
                                         </select>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-5" >
+
+                                <p style={{ marginLeft: "7rem" }} className="error">{errors.name?.message}</p>
+                            </div>
+                            <div className="col-md-4">
+
+                                <p style={{ marginLeft: "11rem" }} className="error">{errors.age?.message}</p>
+                            </div>
+                            <div className="col-md-3">
+
+                                <p style={{ marginLeft: "4.5rem" }} className="error">{errors.sex?.message}</p>
                             </div>
                         </div>
                         <div className="row mb-3">
@@ -429,6 +469,8 @@ const TaskForm = () => {
                     </div>
                 </form>
             </div>
+            kki
+
         </div>
     );
 };
