@@ -16,7 +16,6 @@ const TaskForm = () => {
         localStorage.setItem("data", JSON.stringify(data))
     }
 
-
     useEffect(() => {
         setcountry(Country.getAllCountries())
         setState(State.getStatesOfCountry(countryCode));
