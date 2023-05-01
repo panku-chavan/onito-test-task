@@ -47,7 +47,7 @@ const TaskForm = () => {
                                         <input
                                             className="form-control"
                                             id="name"
-                                            {...register("firstName")}
+                                            {...register("name")}
                                             placeholder="Enter Name"
                                         />
                                     </div>
@@ -56,13 +56,13 @@ const TaskForm = () => {
                             <div className="col-md-4">
                                 <div className="row">
                                     <div className="col-md-4">
-                                        <label htmlFor="dob">Date of Birth od Age* </label>
+                                        <label htmlFor="age">Date of Birth od Age* </label>
                                     </div>
                                     <div className="col-md-8">
                                         <input
                                             className="form-control"
-                                            id="dob"
-                                            {...register("dob")}
+                                            id="age"
+                                            {...register("age")}
                                             placeholder="DD/MM/YYYY or Age in Years"
                                         />
                                     </div>
@@ -220,6 +220,8 @@ const TaskForm = () => {
                                             {...register("state")}
                                             onChange={(e) => setStateCode(e.target.value)}
                                         >
+                                            <option value="" disabled selected hidden>Select State</option>
+
                                             {
                                                 state?.map((s) => <option key={s.isoCode} value={s.isoCode}>{s.name}</option>)
                                             }
@@ -235,8 +237,9 @@ const TaskForm = () => {
                                             className="form-select"
                                             {...register("city")}
                                         >
+                                            <option value="" disabled selected hidden>Select City</option>
                                             {
-                                                city?.map((c) => <option key={c.latitude}>{c.name}</option>)
+                                                city?.map((c, i) => <option key={i} >{c.name}</option>)
                                             }
                                         </select>
                                     </div>
@@ -257,6 +260,7 @@ const TaskForm = () => {
                                             {...register("country")}
                                             onChange={(e) => setCountryCode(e.target.value)}
                                         >
+                                            <option value="IN" >India</option>
                                             {
                                                 country?.map((c) => <option key={c.isoCode} value={c.isoCode} >{c.name}</option>)
                                             }
@@ -317,7 +321,13 @@ const TaskForm = () => {
                                             className="form-select"
                                             {...register("region")}
                                         >
-                                            <option value="">Enter Region</option>
+                                            <option value="" disabled selected hidden>Enter Religion</option>
+                                            <option value="Hindu">Hindu</option>
+                                            <option value="Jain">Jain</option>
+                                            <option value="Sikh">Sikh</option>
+                                            <option value="Muslim">Muslim</option>
+                                            <option value="Christian">Christian</option>
+                                            <option value="Buddhist">Buddhist</option>
                                         </select>
                                     </div>
                                 </div>
@@ -334,7 +344,11 @@ const TaskForm = () => {
                                             className="form-select"
                                             {...register("martial_status")}
                                         >
-                                            <option value="">single</option>
+                                            <option value="" disabled selected hidden>Select</option>
+                                            <option value="single">single</option>
+                                            <option value="married">married</option>
+                                            <option value="widowed">widowed</option>
+                                            <option value="separated">separated</option>
                                         </select>
                                     </div>
                                 </div>
@@ -349,9 +363,17 @@ const TaskForm = () => {
                                             name=""
                                             id=""
                                             className="form-select"
-                                            {...register("blood-group")}
+                                            {...register("blood_group")}
                                         >
-                                            <option value="">B+</option>
+                                            <option value="" disabled selected hidden>Group</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
                                         </select>
                                     </div>
                                 </div>
@@ -367,7 +389,7 @@ const TaskForm = () => {
                                         <input
                                             type="text"
                                             className="form-control"
-                                            value={"India"}
+                                            value={"Indian"}
                                             {...register("nationality")}
                                         />
                                     </div>
