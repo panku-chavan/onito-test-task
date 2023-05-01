@@ -2,9 +2,49 @@ const TaskModel = require("../Model/TaskModel");
 
 const addTaskController = async (req, res) => {
   try {
-    const { name } = req.body;
+    const {
+      name,
+      ID,
+      ID_value,
+      address,
+      blood_group,
+      city,
+      country,
+      age,
+      email,
+      emergency_contact,
+      guardian_label,
+      guardian_name,
+      martial_status,
+      mobile,
+      nationality,
+      ocupation,
+      pincode,
+      region,
+      sex,
+      state,
+    } = req.body;
     const data = new TaskModel({
       name: name,
+      ID: ID,
+      ID_value: ID_value,
+      address: address,
+      blood_group: blood_group,
+      city: city,
+      country: country,
+      age: age,
+      email: email,
+      emergency_contact: emergency_contact,
+      guardian_label: guardian_label,
+      guardian_name: guardian_name,
+      martial_status: martial_status,
+      mobile: mobile,
+      nationality: nationality,
+      ocupation: ocupation,
+      pincode: pincode,
+      region: region,
+      sex: sex,
+      state: state,
     });
     await data.save();
     res.status(200).send({
