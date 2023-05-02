@@ -76,11 +76,15 @@ const TaskForm = () => {
                                         />
                                     </div>
                                 </div>
+                                <div className="row">
+                                    <p style={{ marginLeft: "7rem" }} className="error">{errors.name?.message}</p>
+
+                                </div>
                             </div>
                             <div className="col-md-4">
                                 <div className="row">
                                     <div className="col-md-4">
-                                        <label htmlFor="age">Date of Birth od Age* </label>
+                                        <label htmlFor="age">Date of Birth or Age* </label>
                                     </div>
                                     <div className="col-md-8">
                                         <input
@@ -91,6 +95,10 @@ const TaskForm = () => {
 
                                         />
                                     </div>
+                                </div>
+                                <div className="row">
+                                    <p style={{ marginLeft: "11rem" }} className="error">{errors.age?.message}</p>
+
                                 </div>
                             </div>
                             <div className="col-md-3">
@@ -107,9 +115,13 @@ const TaskForm = () => {
                                         </select>
                                     </div>
                                 </div>
+                                <div className="row">
+                                    <p style={{ marginLeft: "4.5rem" }} className="error">{errors.sex?.message}</p>
+
+                                </div>
                             </div>
                         </div>
-                        <div className="row">
+                        {/* <div className="row">
                             <div className="col-md-5" >
 
                                 <p style={{ marginLeft: "7rem" }} className="error">{errors.name?.message}</p>
@@ -122,7 +134,7 @@ const TaskForm = () => {
 
                                 <p style={{ marginLeft: "4.5rem" }} className="error">{errors.sex?.message}</p>
                             </div>
-                        </div>
+                        </div> */}
                         <div className="row mb-3">
                             <div className="col-md-5">
                                 <div className="row">
@@ -445,7 +457,9 @@ const TaskForm = () => {
                                     height: "50px",
                                     width: "100px",
                                     color: "",
+
                                 }}
+                                onClick={() => reset()}
                             >
                                 CANCEL
                             </button>
@@ -468,7 +482,6 @@ const TaskForm = () => {
                     </div>
                 </form>
             </div>
-            kki
 
         </div>
     );
