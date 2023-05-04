@@ -31,7 +31,7 @@ const TaskForm = () => {
             .required(),
         emergency_contact: yup.string()
             .matches(/^[6-9]\d{9}$/, "should be a valid Indian mobile number.")
-            .required(),
+            .required("Mobile number is required."),
         ID: yup.string().required(),
         ID_value: yup.string().when("ID", {
             is: (ID) =>
@@ -44,7 +44,8 @@ const TaskForm = () => {
                 .matches(
                     /^[A-Za-z]{5}\d{4}[A-Za-z]{1}$/,
                     "Govt Id must be a valid 10-digit alpha-numeric string"
-                ),
+                )
+                .required("Govt Id is required."),
         }),
 
 
