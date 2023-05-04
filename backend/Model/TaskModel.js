@@ -44,7 +44,7 @@ const TaskSchema = mongoose.Schema(
       type: String,
     },
     mobile: {
-      typea: Number,
+      type: Number,
     },
     nationality: {
       type: String,

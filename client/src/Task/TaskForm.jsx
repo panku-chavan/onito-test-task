@@ -4,8 +4,12 @@ import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
+import { toast } from 'react-toastify';
+
+
 
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 const TaskForm = () => {
@@ -13,31 +17,60 @@ const TaskForm = () => {
     const [countryCode, setCountryCode] = useState('');
     const [state, setState] = useState([]);
     const [stateCode, setStateCode] = useState('');
-    const [city, setCity] = useState([])
+    const [city, setCity] = useState([]);
+
+    const navigate = useNavigate();
 
 
     const schema = yup.object().shape({
         name: yup.string().required(),
         age: yup.string().required(),
-        sex: yup.string().required()
-    });
+        sex: yup.string().required(),
+        mobile: yup.string()
+            .matches(/^[6-9]\d{9}$/, "should be a valid Indian mobile number.")
+            .required(),
+        emergency_contact: yup.string()
+            .matches(/^[6-9]\d{9}$/, "should be a valid Indian mobile number.")
+            .required(),
+        ID: yup.string().required(),
+        ID_value: yup.string().when("ID", {
+            is: (ID) =>
+                ["adhar"].includes(ID),
+            then: () => yup
+                .string()
+                .matches(/^\d{12}$/, "Govt Id must be a valid 12-digit numeric string"),
+            otherwise: () => yup
+                .string()
+                .matches(
+                    /^[A-Za-z]{5}\d{4}[A-Za-z]{1}$/,
+                    "Govt Id must be a valid 10-digit alpha-numeric string"
+                ),
+        }),
 
+
+
+    });
+    // console.log(id_type)
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schema)
     });
 
     const onSubmit = async (data) => {
         try {
-            const task = await axios.post('http://localhost:3100/api/v1/task/add-task', data);
+            const task = await axios.post('/api/v1/task/add-task', data);
             if (task?.data?.success) {
-                console.log(task.data.messege)
+                // console.log(task.data.messege)
+                toast.success("Data Saved Successfully!");
+                navigate("/data")
+
             } else {
                 console.log(task.data.messege)
             }
         } catch (error) {
             console.log(error)
         }
-        //console.log(JSON.stringify(data))
+        // console.log(data)
+
     }
 
     useEffect(() => {
@@ -68,18 +101,18 @@ const TaskForm = () => {
                                     </div>
                                     <div className="col-md-10">
                                         <input
+                                            type="text"
                                             className="form-control"
                                             id="name"
                                             {...register("name", { required: true })}
                                             placeholder="Enter Name"
 
                                         />
+                                        <p style={{ marginTop: "2px" }} className="error">{errors.name?.message}</p>
+
                                     </div>
                                 </div>
-                                <div className="row">
-                                    <p style={{ marginLeft: "7rem" }} className="error">{errors.name?.message}</p>
 
-                                </div>
                             </div>
                             <div className="col-md-4">
                                 <div className="row">
@@ -88,18 +121,18 @@ const TaskForm = () => {
                                     </div>
                                     <div className="col-md-8">
                                         <input
+                                            type="date"
                                             className="form-control"
                                             id="age"
                                             {...register("age", { required: true })}
                                             placeholder="DD/MM/YYYY or Age in Years"
 
                                         />
+                                        <p style={{ marginTop: "2px" }} className="error">{errors.age?.message}</p>
+
                                     </div>
                                 </div>
-                                <div className="row">
-                                    <p style={{ marginLeft: "11rem" }} className="error">{errors.age?.message}</p>
 
-                                </div>
                             </div>
                             <div className="col-md-3">
                                 <div className="row">
@@ -113,28 +146,14 @@ const TaskForm = () => {
                                             <option value="male">male</option>
                                             <option value="other">other</option>
                                         </select>
+                                        <p style={{ marginTop: "2px" }} className="error">{errors.sex?.message}</p>
                                     </div>
-                                </div>
-                                <div className="row">
-                                    <p style={{ marginLeft: "4.5rem" }} className="error">{errors.sex?.message}</p>
 
                                 </div>
+
                             </div>
                         </div>
-                        {/* <div className="row">
-                            <div className="col-md-5" >
 
-                                <p style={{ marginLeft: "7rem" }} className="error">{errors.name?.message}</p>
-                            </div>
-                            <div className="col-md-4">
-
-                                <p style={{ marginLeft: "11rem" }} className="error">{errors.age?.message}</p>
-                            </div>
-                            <div className="col-md-3">
-
-                                <p style={{ marginLeft: "4.5rem" }} className="error">{errors.sex?.message}</p>
-                            </div>
-                        </div> */}
                         <div className="row mb-3">
                             <div className="col-md-5">
                                 <div className="row">
@@ -143,13 +162,17 @@ const TaskForm = () => {
                                     </div>
                                     <div className="col-md-9">
                                         <input
+                                            type="number"
                                             className="form-control"
                                             id="mobile"
                                             {...register("mobile")}
                                             placeholder="Enter Mobile"
                                         />
+                                        <p style={{ marginTop: "2px" }} className="error">{errors.mobile?.message}</p>
                                     </div>
+
                                 </div>
+
                             </div>
                             <div className="col-md-4">
                                 <div className="row">
@@ -157,20 +180,26 @@ const TaskForm = () => {
                                         <label htmlFor="id">Govt Issued Id* </label>
                                     </div>
                                     <div id="id" className="col-md-8">
-                                        <select className="form-select" {...register("ID")}>
+                                        <select className="form-select" {...register("ID", { required: true })} >
                                             <option value="">ID Type</option>
                                             <option value="adhar">Adhar</option>
                                             <option value="pan">PAN</option>
                                         </select>
+                                        <p style={{ marginTop: "2px" }} className="error">{errors.ID?.message}</p>
                                     </div>
+
                                 </div>
+
                             </div>
                             <div className="col-md-3">
                                 <input
+                                    type="text"
                                     className="form-control"
-                                    {...register("ID_value")}
+                                    {...register("ID_value", { required: true })}
                                     placeholder="Enter Govt ID"
                                 />
+                                <p style={{ marginTop: "2px" }} className="error">{errors.ID_value?.message}</p>
+
                             </div>
                         </div>
                     </div>
@@ -200,6 +229,7 @@ const TaskForm = () => {
                                     </div>
                                     <div className="col-md-5">
                                         <input
+                                            type="text"
                                             {...register("guardian_name")}
                                             placeholder="Enter Guardian Name"
                                             className="form-control"
@@ -215,7 +245,7 @@ const TaskForm = () => {
                                     <div className="col-md-4">
                                         <input
                                             className="form-control"
-                                            type="text"
+                                            type="email"
                                             {...register("email")}
                                             placeholder="Enter Email"
                                         />
@@ -226,12 +256,17 @@ const TaskForm = () => {
                                     <div className="col-md-4">
                                         <input
                                             className="form-control"
-                                            type="text"
-                                            {...register("emergency_contact")}
+                                            type="number"
+                                            {...register("emergency_contact", { required: true })}
                                             placeholder="Enter Emergency Number"
                                         />
+                                        <p style={{ marginTop: "2px" }} className="error">{errors.emergency_contact?.message}</p>
                                     </div>
+
+
+
                                 </div>
+
                             </div>
                         </div>
                     </div>
