@@ -500,6 +500,23 @@ const TaskForm = () => {
                                 CANCEL
                             </button>
                         </div>
+
+                        <div className="" style={{ marginRight: "3rem" }}>
+                            <button
+                                className="btn btn-outline-secondary"
+                                style={{
+                                    backgroundColor: "",
+                                    height: "50px",
+                                    width: "100px",
+                                    color: "",
+
+                                }}
+                                onClick={() => navigate("/data")}
+                            >
+                                SHOW
+                            </button>
+                        </div>
+
                         <div className="">
                             <button
                                 className="btn"
